@@ -15,7 +15,7 @@ ticTacToe::ticTacToe()
 	std::string instr;
 	int size;
 
-	std::cout << "\n======================= Welcome to C++ Tic-Tac-Toe =======================\n\nBefore we begin, please input desired board size: ";
+	std::cout << "\n======================= Welcome to C++ Tic-Tac-Toe =======================\n\nBefore we begin, please input desired board size (8-66): ";
 	std::getline(std::cin, instr);
 	std::stringstream(instr) >> size;
 

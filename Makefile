@@ -16,3 +16,6 @@ class_board.o: class_board.cpp class_board.h
 
 show_msg:
 	@echo Type \'./tictactoe\' to execute program
+	
+clean:
+	rm -f *.o tictactoe
