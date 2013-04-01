@@ -1,3 +1,6 @@
+// Navn: Ole Aarnseth
+// Studentnr: s180482
+
 #ifndef CLASS_TICTACTOE_H
 #define CLASS_TICTACTOE_H
 
@@ -11,8 +14,7 @@ namespace tttGame{
 
 		public:
 			ticTacToe();
-			void inputMark(int type);
-			void start();
+			void inputMark(int turn);
 			void playRound();
 	};
 }

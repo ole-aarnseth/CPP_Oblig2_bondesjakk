@@ -1,3 +1,6 @@
+// Navn: Ole Aarnseth
+// Studentnr: s180482
+
 #include "class_board.h"
 #include <iostream>
 
@@ -5,6 +8,12 @@ using namespace gameboard;
 
 void board::makeBoard(int size)
 {
+	if (size < 8)
+	size = 8;
+
+	else if (size > 66)
+	size = 66;
+
 	for (int i = 0; i < size; i++)
 	{
 		std::vector<t_mark> v;
@@ -21,12 +30,9 @@ void board::flushBoard()
 {
 	for (unsigned int i = 0; i < myBoard.size(); i++)
 	{
-		std::vector<t_mark> v;
-		myBoard.push_back(v);
-
 		for (unsigned int j = 0; j < myBoard.size(); j++)
 		{
-			myBoard[i].push_back(EMPTY);
+			myBoard[i][j] = EMPTY;
 		}
 	}
 }
@@ -99,13 +105,13 @@ bool board::insertMark(unsigned int a, unsigned int b, t_mark m)
 {
 	if (a > myBoard.size() || a < 1 || b > myBoard.size() || b < 1)
 	{
-		std::cout << "Bad cooradinates, please try again\n";
+		std::cout << "\nBad cooradinates, please try again\n";
 		return false;
 	}
 
 	if (myBoard[--b][--a] == X || myBoard[b][a] == O)
 	{
-		std::cout << "This space is already marked\n";
+		std::cout << "\nThis space is already marked\n";
 		return false;
 	}
 
@@ -118,7 +124,7 @@ t_gamestatus board::boardStatus()
 {
 	unsigned int blocked = 0, Xscore = 0, Oscore = 0;
 
-	// Check all clumns
+	// Check all vertical rows
 
 	for (unsigned int x = 0; x < myBoard.size(); x++)
 	{
@@ -134,16 +140,10 @@ t_gamestatus board::boardStatus()
 		}
 
 		if (Xscore == myBoard.size())
-		{
-			std::cout << "Player X wins!\n";
-			return XWIN;
-		}
+		return XWIN;
 
 		else if (Oscore == myBoard.size())
-		{
-			std::cout << "Player O wins!\n";
-			return OWIN;
-		}
+		return OWIN;
 
 		else if (Xscore > 0 && Oscore > 0)
 		blocked++;
@@ -153,7 +153,7 @@ t_gamestatus board::boardStatus()
 	}
 
 
-	// Check all rows
+	// Check all horizontal rows
 
 	for (unsigned int y = 0; y < myBoard.size(); y++)
 	{
@@ -169,16 +169,10 @@ t_gamestatus board::boardStatus()
 		}
 
 		if (Xscore == myBoard.size())
-		{
-			std::cout << "Player X wins!\n";
-			return XWIN;
-		}
+		return XWIN;
 
 		else if (Oscore == myBoard.size())
-		{
-			std::cout << "Player O wins!\n";
-			return OWIN;
-		}
+		return OWIN;
 
 		else if (Xscore > 0 && Oscore > 0)
 		blocked++;
@@ -204,16 +198,10 @@ t_gamestatus board::boardStatus()
 	}
 
 	if (Xscore == myBoard.size())
-	{
-		std::cout << "Player X wins!\n";
-		return XWIN;
-	}
+	return XWIN;
 
 	else if (Oscore == myBoard.size())
-	{
-		std::cout << "Player O wins!\n";
-		return OWIN;
-	}
+	return OWIN;
 
 	else if (Xscore > 0 && Oscore > 0)
 	blocked++;
@@ -236,16 +224,10 @@ t_gamestatus board::boardStatus()
 	}
 
 	if (Xscore == myBoard.size())
-	{
-		std::cout << "Player X wins!\n";
-		return XWIN;
-	}
+	return XWIN;
 
 	else if (Oscore == myBoard.size())
-	{
-		std::cout << "Player O wins!\n";
-		return OWIN;
-	}
+	return OWIN;
 
 	else if (Xscore > 0 && Oscore > 0)
 	blocked++;
@@ -254,10 +236,7 @@ t_gamestatus board::boardStatus()
 	// Check if all potential rows are blocked
 
 	if (blocked == (myBoard.size() * 2) + 2)
-	{
-		std::cout << "All potential rows blocked, game is unwinnable!\n";
-		return DRAW;
-	}
+	return DRAW;
 
 	return UNFINISHED;
 }

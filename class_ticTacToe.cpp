@@ -1,4 +1,9 @@
+// Navn: Ole Aarnseth
+// Studentnr: s180482
+
 #include "class_ticTacToe.h"
+#include <stdlib.h>
+#include <time.h>
 #include <sstream>
 #include <iostream>
 
@@ -10,29 +15,35 @@ ticTacToe::ticTacToe()
 	std::string instr;
 	int size;
 
-	std::cout << "\nPlease input desired board size: ";
+	std::cout << "\n======================= Welcome to C++ Tic-Tac-Toe =======================\n\nBefore we begin, please input desired board size: ";
 	std::getline(std::cin, instr);
 	std::stringstream(instr) >> size;
 
 	theBoard.makeBoard(size);
 }
 
-void ticTacToe::inputMark(int type)
+void ticTacToe::inputMark(int turn)
 {
 	std::string instr;
 	unsigned int x, y;
 	t_mark t;
 	bool OK = false;
 
-	if (type == 1)
-	t = X;
+	if (turn % 2 == 0)
+	{
+		std::cout << "\n================= PLAYER 'X' INPUT MARK =================";
+		t = X;
+	}
 
 	else
-	t = O;
+	{
+		std::cout << "\n================= PLAYER 'O' INPUT MARK =================";
+		t = O;
+	}
 
 	do
 	{
-		std::cout << "Please input X,Y coordinates with a comma between: ";
+		std::cout << "\n\nPlease input coordinates for new mark [x,y]: ";
 		std::getline(std::cin, instr);
 
 		if (instr.length() < 3)
@@ -92,26 +103,26 @@ void ticTacToe::inputMark(int type)
 	} while (!OK);
 }
 
-void ticTacToe::start()
-{
-	playRound();
-}
-
 void ticTacToe::playRound()
 {
+	nyRunde:
+
 	theBoard.printBoard();
+	srand(time(NULL));
 
-	int ibeforeChk = theBoard.getSize() - 1;
+	int turn = (rand() % 2) + 1;
 
-	for (int i = 0; i < ibeforeChk; i++)
+	if (turn == 2)
+	std::cout << "\nPlayer X begins first!\n";
+
+	else
+	std::cout << "\nPlayer O begins first!\n";
+
+	int iterationsBeforeChk = (theBoard.getSize() * 2) - 1;
+
+	for (int i = 0; i < iterationsBeforeChk; i++)
 	{
-		std::cout << "\n========Player X========\n";
-		inputMark(1);
-
-		theBoard.printBoard();
-
-		std::cout << "\n========Player O========\n";
-		inputMark(2);
+		inputMark(turn++);
 
 		theBoard.printBoard();
 	}
@@ -120,16 +131,31 @@ void ticTacToe::playRound()
 
 	while (status == UNFINISHED)
 	{
-		std::cout << "\n========Player X========\n";
-		inputMark(1);
-
-		theBoard.printBoard();
-
-		std::cout << "\n========Player O========\n";
-		inputMark(2);
+		inputMark(turn++);
 
 		theBoard.printBoard();
 
 		status = theBoard.boardStatus();
+	}
+
+	std::cout << "\n================ END OF ROUND ================\n";
+
+	if (status == XWIN)
+	std::cout << "\nPlayer X won the round!\n\n";
+
+	else if (status == OWIN)
+	std::cout << "\nPlayer O won the round!\n\n";
+
+	else if (status == DRAW)
+	std::cout << "\nAll potetial rows have been blocked and game is unwinnable.\n\n";
+
+	std::string instr;
+	std::cout << "Would you like to play a new round? [y/n]: ";
+	std::getline(std::cin, instr);
+
+	if (instr.length() > 0 && instr.at(0) == 'y')
+	{
+		theBoard.flushBoard();
+		goto nyRunde;
 	}
 }

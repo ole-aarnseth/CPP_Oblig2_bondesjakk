@@ -1,3 +1,6 @@
+// Navn: Ole Aarnseth
+// Studentnr: s180482
+
 #ifndef CLASS_BOARD_H
 #define CLASS_BOARD_H
 
